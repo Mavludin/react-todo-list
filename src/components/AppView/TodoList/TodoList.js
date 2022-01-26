@@ -1,9 +1,25 @@
 import React from "react";
-import { List, Divider, Alert } from "antd";
+import { List, Divider, Alert, Modal } from "antd";
 import styles from "./TodoList.module.css";
-import { DeleteFilled } from "@ant-design/icons";
+import { DeleteFilled, ExclamationCircleOutlined } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 export const TodoList = ({ deleteItem, todoList }) => {
+
+  const handleItemDeletion = (todo) => {
+
+    confirm({
+      title: 'Вы уверены, что хотите удалить данный элемент?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Изменения невозможно будет вернуть.',
+      okType: 'danger',
+      onOk() {
+        deleteItem(todo);
+      }
+    });
+  }
+
   return (
     <section className={styles.todoList}>
       <Divider orientation="left">Задачи</Divider>
@@ -25,7 +41,7 @@ export const TodoList = ({ deleteItem, todoList }) => {
               actions={[
                 <DeleteFilled
                   className={styles.deleteBtn}
-                  onClick={() => deleteItem(todo)}
+                  onClick={() => handleItemDeletion(todo)}
                 />,
               ]}
             >
